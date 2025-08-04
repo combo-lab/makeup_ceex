@@ -20,10 +20,15 @@ This package provides one lexer:
 
 - `Makeup.Lexers.CEExLexer`
 
-It also automatically registers:
+It automatically registers:
 
 - the `ceex` language within the `~CE` sigil.
 - the `ceex` language within the files which are end with `.ceex` extension.
+
+## Thanks
+
+Forked from [elixir-makeup/makeup_eex](https://github.com/elixir-makeup/makeup_eex).
+Many thanks to the original authors and contributors.
 
 ## License
 
