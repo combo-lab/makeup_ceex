@@ -4,7 +4,7 @@ A [Makeup](https://github.com/elixir-makeup/makeup/) lexer for the CEEx language
 
 ## Installation
 
-Add `makeup_ceex` to your list of dependencies in `mix.exs`:
+Add `makeup_ceex` to the list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -13,6 +13,8 @@ def deps do
   ]
 end
 ```
+
+## Note
 
 This package provides one lexer:
 

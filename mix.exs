@@ -2,7 +2,7 @@ defmodule MakeupCEEx.MixProject do
   use Mix.Project
 
   @version "0.1.0"
-  @url "https://github.com/combo-team/makeup_ceex"
+  @source_url "https://github.com/combo-team/makeup_ceex"
 
   def project do
     [
@@ -10,38 +10,22 @@ defmodule MakeupCEEx.MixProject do
       version: @version,
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
-      elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
+      description: "A Makeup lexer for the CEEx language",
+      source_url: @source_url,
+      homepage_url: @source_url,
+      docs: docs(),
       package: package(),
-      description: "CEEx lexer for makeup",
-      test_ignore_filters: [&String.starts_with?(&1, "test/fixtures")],
-      docs: [
-        main: "readme",
-        extras: ["README.md"]
-      ]
+      aliases: aliases()
     ]
   end
 
-  defp package do
-    [
-      name: :makeup_ceex,
-      licenses: ["BSD-2-Clause"],
-      links: %{"GitHub" => @url}
-    ]
-  end
-
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
-
-  # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [],
       mod: {Makeup.Lexers.CEExLexer.Application, []}
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:nimble_parsec, "~> 1.2"},
@@ -51,5 +35,30 @@ defmodule MakeupCEEx.MixProject do
       {:makeup_html, "~> 0.2.0 or ~> 1.0"},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false}
     ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      extras: ["README.md"]
+    ]
+  end
+
+  defp package do
+    [
+      name: :makeup_ceex,
+      licenses: ["BSD-2-Clause"],
+      links: %{"GitHub" => @source_url}
+    ]
+  end
+
+  defp aliases do
+    [publish: ["hex.publish", "tag"], tag: &tag_release/1]
+  end
+
+  defp tag_release(_) do
+    Mix.shell().info("Tagging release as v#{@version}")
+    System.cmd("git", ["tag", "v#{@version}"])
+    System.cmd("git", ["push", "--tags"])
   end
 end
