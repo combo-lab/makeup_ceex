@@ -3,7 +3,7 @@ defmodule Makeup.Lexers.EExLexer.Testing do
 
   alias Makeup.Lexers.{
     EExLexer,
-    HEExLexer,
+    CEExLexer,
     ElixirLexer
   }
 
@@ -55,7 +55,7 @@ defmodule Makeup.Lexers.EExLexer.Testing do
   @spec lex_heex(any) :: list
   def lex_heex(text) do
     text
-    |> HEExLexer.lex(group_prefix: "group")
+    |> CEExLexer.lex(group_prefix: "group")
     |> Postprocess.token_values_to_binaries()
     |> Enum.map(fn {ttype, meta, value} -> {ttype, Map.delete(meta, :language), value} end)
   end

@@ -1,4 +1,4 @@
-defmodule Makeup.Lexers.HEExLexerTest do
+defmodule Makeup.Lexers.CEExLexerTest do
   # Test only the EEx part of the lexer.
 
   use ExUnit.Case
@@ -122,7 +122,7 @@ defmodule Makeup.Lexers.HEExLexerTest do
 
   test "HEEx sigil" do
     assert [
-             {:string_sigil, _, "~H\"\"\""},
+             {:string_sigil, _, "~CE\"\"\""},
              {:whitespace, _, "\n"},
              {:punctuation, _, "<"},
              {:name_tag, _, "div"},
@@ -175,7 +175,7 @@ defmodule Makeup.Lexers.HEExLexerTest do
              {:whitespace, _, "\n"}
            ] =
              Makeup.Lexers.ElixirLexer.lex(~S'''
-             ~H"""
+             ~CE"""
              <div class="foo" bar={@baz}>
                <MyMod.function attr="value" />
                <.local_component data-attr>

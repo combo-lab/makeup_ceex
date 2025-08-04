@@ -1,4 +1,4 @@
-defmodule Makeup.Lexers.HEExLexer do
+defmodule Makeup.Lexers.CEExLexer do
   @moduledoc """
   HEEx lexer.
   """

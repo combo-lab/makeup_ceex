@@ -1,18 +1,19 @@
 defmodule MakeupEEx.MixProject do
   use Mix.Project
 
-  @version "2.0.2"
-  @url "https://github.com/elixir-makeup/makeup_eex"
+  @version "0.1.0"
+  @url "https://github.com/combo-team/makeup_ceex"
 
   def project do
     [
-      app: :makeup_eex,
+      app: :makeup_ceex,
       version: @version,
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       package: package(),
-      description: "(H)EEx lexer for makeup",
+      description: "CEEx lexer for makeup",
       test_ignore_filters: [&String.starts_with?(&1, "test/fixtures")],
       docs: [
         main: "readme",
@@ -23,12 +24,14 @@ defmodule MakeupEEx.MixProject do
 
   defp package do
     [
-      name: :makeup_eex,
+      name: :makeup_ceex,
       licenses: ["BSD-2-Clause"],
-      maintainers: ["Tiago Barroso <tmbb@campus.ul.pt>"],
       links: %{"GitHub" => @url}
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Run "mix help compile.app" to learn about applications.
   def application do
@@ -43,9 +46,8 @@ defmodule MakeupEEx.MixProject do
     [
       {:makeup, "~> 1.2.1 or ~> 1.3"},
       {:nimble_parsec, "~> 1.2"},
-      # Sub-languages
       {:makeup_elixir, "~> 1.0"},
-      {:makeup_html, "~> 0.2.0 or ~> 1.0", optional: true},
+      {:makeup_html, "~> 0.2.0 or ~> 1.0"},
       # Docs
       {:ex_doc, "~> 0.27", only: :dev, runtime: false}
     ]
