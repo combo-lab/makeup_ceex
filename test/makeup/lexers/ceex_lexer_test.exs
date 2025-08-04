@@ -2,14 +2,27 @@ defmodule Makeup.Lexers.CEExLexerTest do
   # Test only the EEx part of the lexer.
 
   use ExUnit.Case
-  import Makeup.Lexers.EExLexer.Testing, only: [lex_heex: 1]
+
+  alias Makeup.Lexers.CEExLexer
+  alias Makeup.Lexer.Postprocess
+
+  # This function has two purposes:
+  # 1. Ensure determnistic lexer output (no random prefix)
+  # 2. Convert the token values into binaries so that the output is more
+  #    obvious on visual inspection (iolists are hard to parse by a human)
+  defp lex_ceex(text) do
+    text
+    |> CEExLexer.lex(group_prefix: "group")
+    |> Postprocess.token_values_to_binaries()
+    |> Enum.map(fn {ttype, meta, value} -> {ttype, Map.delete(meta, :language), value} end)
+  end
 
   test "lex the empty string" do
-    assert lex_heex("") == []
+    assert lex_ceex("") == []
   end
 
   test "deals with comments" do
-    assert lex_heex("hello<%!-- comment --%>world") == [
+    assert lex_ceex("hello<%!-- comment --%>world") == [
              {:string, %{}, "hello"},
              {:comment, %{}, "<%!-- comment --%>"},
              {:string, %{}, "world"}
@@ -17,7 +30,7 @@ defmodule Makeup.Lexers.CEExLexerTest do
   end
 
   test "EEx inside tag" do
-    assert lex_heex("<b><%= @username %></b>") == [
+    assert lex_ceex("<b><%= @username %></b>") == [
              {:punctuation, %{group_id: "group-out-1"}, "<"},
              {:name_tag, %{}, "b"},
              {:punctuation, %{group_id: "group-out-1"}, ">"},
@@ -33,7 +46,7 @@ defmodule Makeup.Lexers.CEExLexerTest do
   end
 
   test "HEEx inside attribute value (the EEx splits the string)" do
-    assert lex_heex(~S[<span class="my-<%= @class %>">]) == [
+    assert lex_ceex(~S[<span class="my-<%= @class %>">]) == [
              {:punctuation, %{group_id: "group-out-1"}, "<"},
              {:name_tag, %{}, "span"},
              {:whitespace, %{}, " "},
@@ -56,7 +69,7 @@ defmodule Makeup.Lexers.CEExLexerTest do
   test "HEEx tag" do
     text = "<% end %>\n"
 
-    assert lex_heex(text) == [
+    assert lex_ceex(text) == [
              {:punctuation, %{group_id: "group-1"}, "<%"},
              {:whitespace, %{}, " "},
              {:keyword, %{}, "end"},
@@ -69,7 +82,7 @@ defmodule Makeup.Lexers.CEExLexerTest do
   test "HEEx tag only" do
     text = "<% end %>"
 
-    assert lex_heex(text) == [
+    assert lex_ceex(text) == [
              {:punctuation, %{group_id: "group-1"}, "<%"},
              {:whitespace, %{}, " "},
              {:keyword, %{}, "end"},
@@ -79,7 +92,7 @@ defmodule Makeup.Lexers.CEExLexerTest do
   end
 
   test "HEEx with curly braces" do
-    assert lex_heex("<b {@attrs}></b>") == [
+    assert lex_ceex("<b {@attrs}></b>") == [
              {:punctuation, %{group_id: "group-out-1"}, "<"},
              {:name_tag, %{}, "b"},
              {:whitespace, %{}, " "},
@@ -97,7 +110,7 @@ defmodule Makeup.Lexers.CEExLexerTest do
     text =
       ~S[<%= Phoenix.View.render(HelloWeb.PageView, "test.html", message: "Hello from layout!") %>]
 
-    assert lex_heex(text) == [
+    assert lex_ceex(text) == [
              {:punctuation, %{group_id: "group-1"}, "<%="},
              {:whitespace, %{}, " "},
              {:name_class, %{}, "Phoenix.View"},

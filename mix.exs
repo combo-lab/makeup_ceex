@@ -1,4 +1,4 @@
-defmodule MakeupEEx.MixProject do
+defmodule MakeupCEEx.MixProject do
   use Mix.Project
 
   @version "0.1.0"
@@ -37,18 +37,18 @@ defmodule MakeupEEx.MixProject do
   def application do
     [
       extra_applications: [],
-      mod: {Makeup.Lexers.EExLexer.Application, []}
+      mod: {Makeup.Lexers.CEExLexer.Application, []}
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:makeup, "~> 1.2.1 or ~> 1.3"},
       {:nimble_parsec, "~> 1.2"},
+      {:makeup, "~> 1.2.1 or ~> 1.3"},
       {:makeup_elixir, "~> 1.0"},
+      {:makeup_eex, "~> 2.0"},
       {:makeup_html, "~> 0.2.0 or ~> 1.0"},
-      # Docs
       {:ex_doc, "~> 0.27", only: :dev, runtime: false}
     ]
   end

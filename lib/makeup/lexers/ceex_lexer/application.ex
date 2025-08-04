@@ -1,4 +1,4 @@
-defmodule Makeup.Lexers.EExLexer.Application do
+defmodule Makeup.Lexers.CEExLexer.Application do
   @moduledoc false
   use Application
 
