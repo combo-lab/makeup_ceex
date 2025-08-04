@@ -234,7 +234,7 @@ defmodule Makeup.Lexers.CEExLexer do
     group_prefix = Keyword.get(opts, :group_prefix, random_prefix(10))
 
     outer_lexer =
-      Keyword.get(opts, :outer_lexer, &Makeup.Lexers.EExLexer.Application.dynamic_html_lexer/0)
+      Makeup.Registry.get_lexer_by_name("html") || Makeup.Registry.get_lexer_by_extension("html")
 
     # First pass - lex the HEEx part and ignore the outside HTML
     {:ok, tokens, "", _, _, _} = root(text)
