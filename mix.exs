@@ -2,7 +2,7 @@ defmodule MakeupCEEx.MixProject do
   use Mix.Project
 
   @version "0.1.0"
-  @source_url "https://github.com/combo-team/makeup_ceex"
+  @source_url "https://github.com/combo-lab/makeup_ceex"
 
   def project do
     [
